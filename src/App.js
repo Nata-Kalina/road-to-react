@@ -1,5 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
+import styles from './App.module.css';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -122,7 +123,7 @@ const App = () => {
   };
 
   const SearchForm = ({ searchTerm, onSearchInput, onSearchSubmit }) => (
-    <form onSubmit={onSearchSubmit}>
+    <form onSubmit={onSearchSubmit} className={styles.searchForm}>
       <InputWithLabel
         id="search"
         value={searchTerm}
@@ -132,23 +133,21 @@ const App = () => {
         <strong>Search</strong>
       </InputWithLabel>
 
-      <button type="submit" disabled={!searchTerm}>
+      <button type="submit" disabled={!searchTerm} className={`${styles.button} ${styles.buttonLarge}`}>
         Submit
       </button>
     </form>
   );
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Hacker Stories</h1>
 
       <SearchForm
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
       />
-
-      <hr />
 
       {stories.isError && <p>Something went wrong...</p>}
 
@@ -178,7 +177,7 @@ const InputWithLabel = ({
 
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={id}  className={styles.label}>{children}</label>
       &nbsp;
       <input
         ref={inputRef}
@@ -187,6 +186,7 @@ const InputWithLabel = ({
         value={value}
         autoFocus={isFocused}
         onChange={onInputChange}
+        className={styles.input}
       />
     </>
   );
@@ -200,32 +200,27 @@ const List = ({ list, onRemoveItem }) => (
   </ul>
 );
 
-const Item = ({ item, onRemoveItem }) => {
-  const handleRemoveItem = () => {
-    onRemoveItem(item);
-  };
-  return (
-    <li>
-      <span>
-        <a href={item.url}>{item.title}</a>
-      </span>
-      <span>
-        {' '}
-        | <strong>Author</strong>: {item.author} |{' '}
-      </span>
-      <span>
-        <strong>Number of Comments</strong>: {item.num_comments} |{' '}
-      </span>
-      <span>
-        <strong>Points</strong>: {item.points}
-      </span>
-      <span>
-        <button type="button" onClick={() => onRemoveItem(item)}>
-          Dismiss
-        </button>
-      </span>
-    </li>
-  );
-};
+const Item = ({ item, onRemoveItem }) => (
+  <li className={styles.item}>
+    <span style={{ width: '30%' }}>
+      <a href={item.url}>{item.title}</a>
+    </span>
+    <span style={{ width: '20%' }}>
+      {' '}
+      | <strong>Author</strong>: {item.author} |{' '}
+    </span>
+    <span style={{ width: '20%' }}>
+      <strong>Number of Comments</strong>: {item.num_comments} |{' '}
+    </span>
+    <span style={{ width: '20%' }}>
+      <strong>Points</strong>: {item.points}
+    </span>
+    <span style={{ width: '10%' }}>
+      <button type="button" onClick={() => onRemoveItem(item)} className={`${styles.button} ${styles.buttonSmall}`}>
+        Dismiss
+      </button>
+    </span>
+  </li>
+);
 
 export default App;
